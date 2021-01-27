@@ -30,6 +30,7 @@ def add_file(archive, file):
         with open(file) as f:
             af.seek(pos, os.SEEK_SET)
             af.write(f.read())
+        map_pos = af.tell()
         for fn in archive_map:
             pos = archive_map[fn][0]
             size = archive_map[fn][1]
@@ -39,6 +40,8 @@ def add_file(archive, file):
         af.write(file + '\0')
         af.write(pos.to_bytes(4, byteorder='big'))
         af.write(size.to_bytes(4, byteorder='big'))
+        af.seek(0, os.SEEK_SET)
+        af.write(map_pos.to_bytes(4, byteorder='big'))
     return True
 
 
