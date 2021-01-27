@@ -27,20 +27,28 @@ def add_file(archive, file):
     with open(archive, "w") as af:
         pos = af.read(4)
         size = os.path.getsize(file)
+
+        # Write file contents
         with open(file) as f:
             af.seek(pos, os.SEEK_SET)
             af.write(f.read())
         map_pos = af.tell()
+
+        # Move map to the end of archive
         for fn in archive_map:
             pos = archive_map[fn][0]
             size = archive_map[fn][1]
             af.write(fn + '\0')
             af.write(pos.to_bytes(4, byteorder='big'))
             af.write(size.to_bytes(4, byteorder='big'))
+        
+        # Add new file infomation to map
         af.write(file + '\0')
         af.write(pos.to_bytes(4, byteorder='big'))
         af.write(size.to_bytes(4, byteorder='big'))
         af.seek(0, os.SEEK_SET)
+
+        # Update map position
         af.write(map_pos.to_bytes(4, byteorder='big'))
     return True
 
