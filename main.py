@@ -24,7 +24,7 @@ def load_archive(archive):
 
 def add_file(archive, file):
     archive_map = load_archive(archive)
-    with open(archive, "w") as af:
+    with open(archive, "r+b") as af:
         pos = af.read(4)
         size = os.path.getsize(file)
 
