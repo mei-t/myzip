@@ -1,4 +1,4 @@
-import os    
+import os, sys   
 
 def load_archive(archive):
     with open(archive) as file:
@@ -73,3 +73,14 @@ def list_files(archive):
     archive_map = load_archive(archive)
     for file_name in archive_map:
         print(file_name, ", ", archive_map[file_name][1], " bytes")
+    
+
+if __name__ == '__main__':
+    arg = sys.argv
+    if arg[1] == "add":
+        add_file(arg[2], arg[3])
+    elif arg[1] == "list":
+        list_files(arg[2])
+    elif arg[1] == "extract":
+        file_path = arg[4] if len(arg) == 5 else ""
+        extract_file(arg[2], arg[3], file_path)
